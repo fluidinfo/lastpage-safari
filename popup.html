@@ -51,18 +51,14 @@
       }
     </style>
     <script type="text/javascript">
-      function login() {
-        var userfield = document.getElementById("username");
-        var passfield = document.getElementById("password");
-        localStorage.username = userfield.value;
-        localStorage.password = passfield.value;
-        document.getElementById("login").style.display = "none";
-        document.getElementById("popup").style.display = "block";
-        if (localStorage.advanced !== "true") {
-          chrome.browserAction.setPopup({popup: ""});
-          window.close();
-        }
-      }
+      // function login() {
+      //   var userfield = document.getElementById("username");
+      //   var passfield = document.getElementById("password");
+      //   localStorage.username = userfield.value;
+      //   localStorage.password = passfield.value;
+      //   document.getElementById("login").style.display = "none";
+      //   document.getElementById("popup").style.display = "block";
+      // }
       function click(div) {
         var suffix = document.getElementById("suffix").value;
         if (div.id == "save") {
