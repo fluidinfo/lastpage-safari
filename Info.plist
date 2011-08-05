@@ -74,6 +74,8 @@
 			<string>All</string>
 		</dict>
 	</dict>
+	<key>Update Manifest URL</key>
+	<string>http://fluiddb.fluidinfo.com/about/lastpage.me/gridaphobe/lastpage.me.safari.plist</string>
 	<key>Website</key>
 	<string>http://lastpage.me</string>
 </dict>
