@@ -9,6 +9,8 @@ function performCommand(event) {
                        });
     } else {
         console.log("ERROR: username or password not found.");
+        alert("You don't seem to be logged in. Please login via our " +
+              "preference pane in Safari.");
         // safari.extension.popovers[0].show();
         return;
     }
