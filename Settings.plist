@@ -24,5 +24,11 @@
 		<key>Type</key>
 		<string>TextField</string>
 	</dict>
+	<dict>
+		<key>DefaultValue</key>
+		<false/>
+		<key>Key</key>
+		<string>valid</string>
+	</dict>
 </array>
 </plist>

@@ -11,10 +11,17 @@ function performCommand(event) {
         console.log("ERROR: username or password not found.");
         alert("You don't seem to be logged in. Please login via our " +
               "preference pane in Safari.");
-        // safari.extension.popovers[0].show();
         return;
     }
 
+    if (!safari.extension.settings.valid) {
+        console.log("ERROR: invalid credentials provided.");
+        alert("You seem to have provided an invalid username or password. " +
+              "Please enter the correct username and password via our preference " +
+              "pane in Safari.");
+        return;
+    }
+    
     if (event.suffix) {
         var suffix = event.suffix;
         if (suffix.match(/^[\w\d\.\-\:\/]+$/))
@@ -86,21 +93,21 @@ function popoverHandler(event) {
     if (event.target.identifier !== "lastpagePopover") return;
     safari.extension.popovers[0].contentWindow.location.reload();
 }
-safari.application.addEventListener("popover", popoverHandler, true);
 
-function notify(redirect) {
-    // only want to do this once...
-    if (!localStorage.notified) {
-        var notification = webkitNotifications.createNotification(
-            '../icon-48px.png',
-            'Congratulations!',
-            "We've recorded your current web location. To bring a friend " +
-                "to this page, tell them to visit "+ redirect + ". " +
-                "To make it easier to pass along, we've also " +
-                "copied " + redirect + " to your clipboard."
-        )
-        notification.show();
-        localStorage.notified = true;
+function validateCredentials(event) {
+    if (event.key == "username" || event.key == "password") {
+        var username = safari.extension.secureSettings.username;
+        var password = safari.extension.secureSettings.password;
+        var fi = fluidinfo({username: username,
+                            password: password});
+        fi.api.get({path: ["users", username],
+                    onSuccess: function(response) {
+                        safari.extension.settings.valid = true;
+                    },
+                    onError: function(response) {
+                        safari.extension.settings.valid = false;
+                    }
+                   });
     }
 }
 
@@ -114,40 +121,6 @@ function copy(text) {
 
 // register handlers with application
 safari.application.addEventListener("command", performCommand, false);
+safari.application.addEventListener("popover", popoverHandler, true);
 safari.application.addEventListener("validate", validateCommand, false);
-
-
-// // initialize the popup or browser action depending on settings
-// chrome.browserAction.onClicked.addListener(
-//     function(tab) {
-//         chrome.tabs.executeScript(tab.id,
-//                                   {code: 
-//                                    'chrome.extension.sendRequest(' +
-//                                    '{action: "saveLocation"},' +
-//                                    'function(response) {' +
-//                                    'console.log(response);' +
-//                                    '});'}
-//                                  );
-//     }
-// );
-
-// if (safari.extension.settings.advanced === true ||
-//     !(safari.extension.secureSettings.username &&
-//       safari.extension.secureSettings.password)) {
-//     // show the popover if user is not logged in or has chosen advanced
-//     // mode
-//     safari.extension.toolbarItems[0].popover = safari.extension.popovers[0];
-// }
-// function popoverHandler(event) {
-//     if (event.target.identifier !== "lastpagePopover") return;
-//     if (safari.extension.settings.advanced === false &&
-//         safari.extension.secureSettings.username &&
-//         safari.extension.secureSettings.password) {
-//         // user is logged in and does not want advanced mode
-//         // save();
-//         event.preventDefault();
-//         event.stopPropagation();
-//     }
-// }
-// safari.application.addEventListener("popover", popoverHandler,
-// true);
+safari.extension.secureSettings.addEventListener("change", validateCredentials, false);

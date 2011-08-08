@@ -51,14 +51,6 @@
       }
     </style>
     <script type="text/javascript">
-      // function login() {
-      //   var userfield = document.getElementById("username");
-      //   var passfield = document.getElementById("password");
-      //   localStorage.username = userfield.value;
-      //   localStorage.password = passfield.value;
-      //   document.getElementById("login").style.display = "none";
-      //   document.getElementById("popup").style.display = "block";
-      // }
       function click(div) {
         var suffix = document.getElementById("suffix").value;
         if (div.id == "save") {
@@ -83,24 +75,6 @@
     </script>
   </head>
   <body>
-    <!-- <div id="login" style="display: none;"> -->
-    <!--   <p> -->
-    <!--     This is the first time you're using lastpage.me, so you'll -->
-    <!--     need to enter your Fluidinfo username and password. You'll -->
-    <!--     only have to do this once. -->
-    <!--   </p> -->
-    <!--   <form onSubmit="login()"> -->
-    <!--     <label for="username">Username</label> -->
-    <!--     <br /> -->
-    <!--     <input type="text" id="username" /> -->
-    <!--     <br /> -->
-    <!--     <label for="password">Password</label> -->
-    <!--     <br /> -->
-    <!--     <input type="password" id="password" /> -->
-    <!--     <br /> -->
-    <!--     <input type="submit" value="Save" /> -->
-    <!--   </form> -->
-    <!-- </div> -->
     <div id="popup">
       <div onclick="click(this)" class="link" id="save">Save</div>
       <div onclick="click(this)" class="link" id="clear">Clear</div>
@@ -109,12 +83,5 @@
         <input type="text" id="suffix" style="display: none;" />
       </form>
     </div>
-    <!-- <script type="text/javascript"> -->
-    <!--   if (!localStorage.username || !localStorage.password) { -->
-    <!--     document.getElementById("popup").style.display = "none"; -->
-    <!--     document.getElementById("login").style.display = "block"; -->
-    <!--     document.getElementById("username").focus(); -->
-    <!--   } -->
-    <!-- </script> -->
   </body>
 </html>
