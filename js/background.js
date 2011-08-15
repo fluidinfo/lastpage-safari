@@ -33,18 +33,13 @@ function performCommand(event) {
         var tag_name = username + "/lastpage";
     }
 
-    var clear = function() {
+    var clear = function(onSuccess) {
         fi.delete({where: "has " + tag_name,
-                   tags: tag_name,
-                   onSuccess: function(response) {
-                       console.log("delete successful");
-                       console.log(response);
-                   },
+                   tags: [tag_name],
+                   onSuccess: onSuccess,
                    onError: function(response) {
-                       console.log("delete unsuccessful");
                        console.log(response);
-                   },
-                   async: false
+                   }
                   });
     };
 
@@ -54,31 +49,27 @@ function performCommand(event) {
         fi.api.put({path: ["about", url, tag_name],
                     data: unix_time,
                     onSuccess: function(response) {
-                        console.log("tag successful");
                         console.log(response);
                     },
                     onError: function(response) {
-                        console.log("tag unsuccessful");
                         console.log(response);
-                    },
-                    async: false
+                    }
                    });
     };
 
     if (event.command === "save-location") {
-        // delete the old location
-        clear();
-        // save the new location
         var url = safari.application.activeBrowserWindow.activeTab.url;
         var redirect = "http://lastpage.me/" + username;
         if (event.suffix)
             redirect += "/" + suffix;
-        save(url);
-        copy(redirect);
-        console.log("New URL saved.");
+        // delete the old location
+        clear(function(response) {
+          console.log(response);
+          // save the new location
+          save(url);
+        });
     } else if (event.command === "clear-location") {
-        clear();
-        console.log("Old URL cleared.");
+        clear(function(response) { console.log(response); });
     }
 }
 
@@ -109,14 +100,6 @@ function validateCredentials(event) {
                     }
                    });
     }
-}
-
-function copy(text) {
-    input = document.getElementById("copy");
-    input.value = text;
-    input.focus();
-    input.select();
-    document.execCommand("Copy");
 }
 
 // register handlers with application
