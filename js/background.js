@@ -38,6 +38,10 @@ function performCommand(event) {
                    tags: [tag_name],
                    onSuccess: onSuccess,
                    onError: function(response) {
+                       // a 404 in this case probably means the tag
+                       // doesn't exist so we should just create it
+                       if (response.status == 404 && onSuccess != null)
+                           onSuccess(response);
                        console.log(response);
                    }
                   });
